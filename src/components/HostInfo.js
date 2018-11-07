@@ -4,45 +4,53 @@ import { Radio, Icon, Card, Grid, Image, Dropdown, List, Segment, Divider } from
 
 class HostInfo extends Component{
   state = {
-    checked: false,
-    value: "Area one",
-    areas: [
-      {key: 'area1', text: 'area1', value: 'Area one'},
-      {key: 'area2', text: 'area2', value: 'Area two'},
-      {key: 'area3', text: 'area3', value: 'Area three'}
-    ]
-    // This state is here to show you how the Info box should work. But it doesn't have to (and probably shouldn't) live here
-    // Plus the areas aren't called area1,2,or 3. That's just a placeholder.
+    value: '',
+    areas: this.props.areas.map(a => {
+      return ({
+        key: a.name.split('_').map(el => el[0].toUpperCase() + el.slice(1)).join(' '),
+        text: a.name.split('_').map(el => el[0].toUpperCase() + el.slice(1)).join(' '),
+        value: a.name
+      })
+    })
   }
 
-  handleChange = (e) => {
-    // Your code here
+  handleChange = (e, {value}) => {
+    this.setState({ value }, () => {
+      this.props.toggleHost(this.props.host, this.state.value)
+      this.setState({value: ''})
+    })
   }
-
 
   toggle = () => {
-    // Your code here
+    console.log('toggle')
+    this.props.toggleHost(this.props.host)
   }
 
   render(){
     const { value, areas } = this.state
-    // A lot of these values are hardcoded.....but they shouldn't be, hint hint....
-
+    console.log(this.props.host)
+    
     return (
       <Segment>
         <Grid>
           <Grid.Column width={6}>
-            <Image floated='left' size='small' src='https://a1cf74336522e87f135f-2f21ace9a6cf0052456644b80fa06d4f.ssl.cf2.rackcdn.com/images/characters/westworld-james.jpg'/>
+            <Image floated='left' size='small' src={this.props.host.imageUrl}/>
           </Grid.Column>
           <Grid.Column width={10}>
             <Card>
               <Card.Content>
                 <Card.Header>
-                  Teddy Flood <Icon name='man' />
-                  { /* What should happen when the host isn't a man? Or when his name isn't Teddy? */}
+                  {this.props.host.firstName + ' ' + (this.props.host.lastName === 'n/a' ? '' : this.props.host.lastName)} 
+                  <Icon name={this.props.host.gender === 'Male' ? 'man' : 'female'} />
                 </Card.Header>
                 <Card.Meta>
-                  <Radio style={{margin: "10px"}} slider onChange={this.toggle} label={this.state.checked ? "Active" : "Decommissioned"} checked={this.state.checked}/>
+                  <Radio 
+                    style={{margin: "10px"}} 
+                    slider 
+                    onChange={this.toggle} 
+                    label={this.props.host.status === "Active" ? "Active" : "Decommissioned"} 
+                    checked={this.props.host.status === "Active"}
+                  />
                 </Card.Meta>
 
                 <Divider />
@@ -51,7 +59,8 @@ class HostInfo extends Component{
                   onChange={this.handleChange}
                   value={value}
                   selection
-                  options={areas} />
+                  options={areas}
+                />
 
               </Card.Content>
             </Card>

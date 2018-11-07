@@ -3,12 +3,12 @@ import { Segment } from 'semantic-ui-react'
 import HostList from './HostList'
 
 
-const ColdStorage = () => {
+const ColdStorage = (props) => {
 
   return(
     <Segment style={{height:'100%'}}>
-      <h3>ColdStorage</h3>
-      <HostList />
+      <h3 style={{color: 'black'}}>Cold Storage</h3>
+      <HostList hosts={props.hosts} handleClickHost={props.handleClickHost} />
     </Segment>
   )
 }

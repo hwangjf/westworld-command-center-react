@@ -1,23 +1,34 @@
 import React from 'react';
 import { Grid } from 'semantic-ui-react';
+import Host from './Host'
+import HostList from './HostList';
+import HostInfo from './HostInfo';
+import ColdStorage from './ColdStorage';
 
-const Headquarters = (props) => {
+class Headquarters extends React.Component {
 
-  return(
-    <Grid celled='internally'>
-      <Grid.Column width={10}>
+  filteredHosts = (arr) => {
+    return arr.filter(host => {
+      return host.area === "cold_storage"
+    })
+  }
+  
+  render() {
+    return(
+      <Grid id="headquarters" celled='internally'>
+        <Grid.Column width={10}>
+          <ColdStorage hosts={this.filteredHosts(this.props.hosts)} handleClickHost={this.props.handleClickHost} />
+        </Grid.Column>
 
-        { /* Component goes here */}
-
-      </Grid.Column>
-
-      <Grid.Column width={5}>
-
-        { /* Component goes here */}
-
-      </Grid.Column>
-    </Grid>
-  )
+        <Grid.Column width={5}>
+          {this.props.selectedHost ?
+            <HostInfo toggleHost={this.props.toggleHost} areas={this.props.areas} host={this.props.selectedHost} />
+            : null
+          }
+        </Grid.Column>
+      </Grid>
+    )
+  }
 }
 
 
