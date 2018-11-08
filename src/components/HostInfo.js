@@ -16,19 +16,20 @@ class HostInfo extends Component{
 
   handleChange = (e, {value}) => {
     this.setState({ value }, () => {
+      
       this.props.toggleHost(this.props.host, this.state.value)
       this.setState({value: ''})
     })
   }
 
   toggle = () => {
-    console.log('toggle')
+    
     this.props.toggleHost(this.props.host)
   }
 
   render(){
     const { value, areas } = this.state
-    console.log(this.props.host)
+
     
     return (
       <Segment>
